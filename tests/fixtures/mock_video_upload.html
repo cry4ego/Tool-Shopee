@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>Mock Seller Centre — Đăng video</title>
+  <!--
+    Trang giả lập cho test poster.py. Tham số URL:
+      upload_ms=N   thời gian "tải lên" (mặc định 300; -1 = không bao giờ xong)
+      result=success|error|none   phản hồi sau khi bấm Đăng (none = không có thông báo)
+      no_upload=1   không có nút "Tải video lên"
+    Bẫy cố ý: nút "Đăng xuất" và "Đăng ký nhận tin" (chứa chữ "Đăng"), checkbox điều khoản bị ẩn.
+  -->
+</head>
+<body>
+  <header><button id="logout" onclick="track('Đăng xuất')">Đăng xuất</button></header>
+  <main>
+    <button id="upload-btn">Tải video lên</button>
+    <input id="file" type="file" accept="video/*" style="display:none">
+    <div id="progress"></div>
+
+    <textarea id="caption" placeholder="Nhập caption cho video"></textarea>
+
+    <label id="terms">
+      <input id="terms-box" type="checkbox" style="display:none">
+      <span class="fake-box">☐</span> Tôi đồng ý với Điều khoản Shopee Video
+    </label>
+
+    <button id="submit" disabled>Đăng</button>
+    <button id="newsletter" onclick="track('Đăng ký nhận tin')">Đăng ký nhận tin</button>
+    <div id="toast" role="alert"></div>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const uploadMs = Number(params.get("upload_ms") ?? 300);
+    const result = params.get("result") ?? "success";
+    window.__clicked = [];
+    window.__posted = null;
+
+    function track(name) { window.__clicked.push(name); }
+    const $ = (id) => document.getElementById(id);
+
+    if (params.get("no_upload")) $("upload-btn").remove();
+    $("upload-btn")?.addEventListener("click", () => $("file").click());
+
+    $("file").addEventListener("change", () => {
+      $("progress").textContent = "Đang tải lên...";
+      if (uploadMs < 0) return;
+      setTimeout(() => {
+        $("progress").textContent = "Tải lên hoàn tất";
+        $("submit").disabled = false;
+      }, uploadMs);
+    });
+
+    $("terms-box").addEventListener("change", () => {
+      document.querySelector(".fake-box").textContent = $("terms-box").checked ? "☑" : "☐";
+    });
+
+    $("submit").addEventListener("click", () => {
+      track("Đăng");
+      if (!$("terms-box").checked) { $("toast").textContent = "Vui lòng đồng ý điều khoản"; return; }
+      setTimeout(() => {
+        if (result === "success") {
+          window.__posted = { caption: $("caption").value, file: $("file").files[0]?.name };
+          $("toast").textContent = "Đăng thành công";
+        } else if (result === "error") {
+          $("toast").textContent = "Đăng thất bại: video không hợp lệ";
+        }
+      }, 200);
+    });
+  </script>
+</body>
+</html>

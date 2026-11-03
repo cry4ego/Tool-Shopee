@@ -1,0 +1,26 @@
+{
+  "accounts": {
+    "account_a": { "hashtags": ["#shopeevn", "#sale"] },
+    "account_b": { "hashtags": ["#fashion"] }
+  },
+  "tasks": [
+    {
+      "id": "t001",
+      "type": "video",
+      "account": "account_a",
+      "video_path": "videos/video1.mp4",
+      "caption": "Sản phẩm hot",
+      "hashtags": ["#hot"],
+      "schedule_time": "2026-11-03 14:00",
+      "product_id": null
+    },
+    {
+      "id": "t002",
+      "type": "post",
+      "account": "account_b",
+      "images": ["images/p1.jpg"],
+      "caption": "Mẫu mới về",
+      "schedule_time": null
+    }
+  ]
+}

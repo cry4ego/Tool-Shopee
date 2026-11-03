@@ -1,0 +1,27 @@
+# Trạng thái đăng nhập (cookie + localStorage) — KHÔNG đưa lên Git
+accounts/
+
+# File tài khoản/mật khẩu dạng bảng tính — KHÔNG đưa lên Git
+*.xlsx
+*.xls
+
+# Video nguồn
+videos/
+
+# Log, kết quả chạy và file khóa
+logs/
+state/
+
+# Ảnh chụp màn hình khi đăng lỗi (poster.py ghi error_<account>.png)
+error_*.png
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Cache của công cụ dev (pytest, ruff, coverage)
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
